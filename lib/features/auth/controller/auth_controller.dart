@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../apis/auth_api.dart';
-import '../widgets/coustom_snackBar.dart';
+import '../../../common/common.dart';
 
 final authControllerProvider = StateNotifierProvider<AuthController, bool>(
   (ref) {
@@ -25,9 +25,24 @@ class AuthController extends StateNotifier<bool> {
   }) async {
     state = true;
     final res = await _authApi.signUp(email: email, password: password);
+    state = false;
     res.fold(
       (l) => snackBar(l.message, context),
       (r) => print(r.email),
+    );
+  }
+
+  void login({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    state = true;
+    final res = await _authApi.login(email: email, password: password);
+    state = false;
+    res.fold(
+      (l) => snackBar(l.message, context),
+      (r) => print(r.userId),
     );
   }
 }

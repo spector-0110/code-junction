@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import '../core/core.dart';
 
-// when we will access user data we use model.Account i.e. from appwrite/models.dart
+// when we will access user data we use model.User i.e. from appwrite/models.dart as model
 // when we want to create user or signup we use account .service i.e. appwrite/appwrite
 final authApiProvider = Provider((ref) {
   final account = ref.watch(appWriteAccountProvider);
@@ -14,7 +14,11 @@ final authApiProvider = Provider((ref) {
 });
 
 abstract class IAuthApi {
-  FutureEither<model.Account> signUp({
+  FutureEither<model.User> signUp({
+    required String email,
+    required String password,
+  });
+  FutureEither<model.Session> login({
     required String email,
     required String password,
   });
@@ -26,7 +30,7 @@ class AuthApi implements IAuthApi {
   AuthApi({required Account account}) : _account = account;
 
   @override
-  FutureEither<model.Account> signUp({
+  FutureEither<model.User> signUp({
     required String email,
     required String password,
   }) async {
@@ -40,6 +44,24 @@ class AuthApi implements IAuthApi {
     } on AppwriteException catch (e, stackTrace) {
       return left(
         Failure(e.message ?? 'Exception', stackTrace),
+      );
+    } catch (e, stackTrace) {
+      return left(
+        Failure(e.toString(), stackTrace),
+      );
+    }
+  }
+
+  @override
+  FutureEither<model.Session> login(
+      {required String email, required String password}) async {
+    try {
+      final session =
+          await _account.createEmailSession(email: email, password: password);
+      return right(session);
+    } on AppwriteException catch (e, stackTrace) {
+      return left(
+        Failure(e.message ?? 'expeption while log in', stackTrace),
       );
     } catch (e, stackTrace) {
       return left(

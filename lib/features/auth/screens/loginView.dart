@@ -1,32 +1,39 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../constants/constants.dart';
 import '../../../theme/theme.dart';
-import '../widgets/auth_field.dart';
-import '../widgets/rounded_buttom.dart';
+import '../controller/auth_controller.dart';
 import 'signup_view.dart';
+import '../../../common/common.dart';
+import '../widgets/auth_field.dart';
 
-class LoginView extends StatefulWidget {
+class LoginView extends ConsumerStatefulWidget {
   static route() => MaterialPageRoute(
         builder: (context) => const LoginView(),
       );
   const LoginView({super.key});
-
   @override
-  State<LoginView> createState() => _LoginViewState();
+  ConsumerState<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginViewState extends ConsumerState<LoginView> {
   final appbar = UIconstants.appBar();
   final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
+  void onLogin() {
+    ref.read(authControllerProvider.notifier).login(
+        email: _userNameController.text,
+        password: _passwordController.text,
+        context: context);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final isLoding = ref.watch(authControllerProvider);
     return Scaffold(
       appBar: appbar,
-      body: SafeArea(
+      body: isLoding ? const Loader():SafeArea(
           child: Stack(
         children: [
           Container(
@@ -68,13 +75,14 @@ class _LoginViewState extends State<LoginView> {
                         height: 23,
                       ),
                       AuthField(
+                          obscureText: true,
                           controller: _passwordController,
                           hintText: "password"),
                       const SizedBox(
                         height: 70,
                       ),
                       RoundedSmallButton(
-                          onTap: () {},
+                          onTap: onLogin,
                           label: "Log In ",
                           backgroundColor: Pallete.whiteColor),
                       const SizedBox(

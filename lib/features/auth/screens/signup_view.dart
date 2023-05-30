@@ -5,7 +5,7 @@ import '../../../constants/constants.dart';
 import '../../../theme/theme.dart';
 import '../controller/auth_controller.dart';
 import '../widgets/auth_field.dart';
-import '../widgets/rounded_buttom.dart';
+import '../../../common/common.dart';
 import 'loginView.dart';
 
 class SignUpView extends ConsumerStatefulWidget {
@@ -32,79 +32,88 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(authControllerProvider);
     return Scaffold(
       appBar: appbar,
-      body: SafeArea(
-          child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: const AssetImage(AssestConstants.appBgWhite),
-                colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.2), BlendMode.dstATop),
-              ),
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              gradient: RadialGradient(colors: [
-                Pallete.greyColor.withOpacity(0.2),
-                Pallete.blueColor.withOpacity(.04)
-              ], focalRadius: 2),
-            ),
-          ),
-          SingleChildScrollView(
-            child: Column(
+      body: isLoading
+          ? const Loader()
+          : SafeArea(
+              child: Stack(
               children: [
-                const SizedBox(
-                  height: 70,
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: const AssetImage(AssestConstants.appBgWhite),
+                      colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                    ),
+                  ),
                 ),
-                const Icon(
-                  Icons.code,
-                  size: 150,
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: RadialGradient(colors: [
+                      Pallete.greyColor.withOpacity(0.2),
+                      Pallete.blueColor.withOpacity(.04)
+                    ], focalRadius: 2),
+                  ),
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
-                Form(
+                SingleChildScrollView(
                   child: Column(
                     children: [
-                      AuthField(
-                          controller: _userNameController, hintText: "Email"),
-                      const SizedBox(
-                        height: 23,
-                      ),
-                      AuthField(
-                          controller: _passwordController,
-                          hintText: "password"),
                       const SizedBox(
                         height: 70,
                       ),
-                      RoundedSmallButton(onTap: onSignUp, label: "SignUp "),
-                      const SizedBox(
-                        height: 40,
+                      const Icon(
+                        Icons.code,
+                        size: 150,
                       ),
-                      RichText(
-                        text: TextSpan(
-                          text: "Already have an account ?",
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
+                      const SizedBox(
+                        height: 80,
+                      ),
+                      Form(
+                        child: Column(
                           children: [
-                            TextSpan(
-                              text: '  Log in',
-                              style: const TextStyle(
-                                color: Pallete.blueColor,
-                                fontSize: 16,
+                            AuthField(
+                                controller: _userNameController,
+                                hintText: "Email"),
+                            const SizedBox(
+                              height: 23,
+                            ),
+                            AuthField(
+                                obscureText: true,
+                                controller: _passwordController,
+                                hintText: "password"),
+                            const SizedBox(
+                              height: 70,
+                            ),
+                            RoundedSmallButton(
+                                onTap: onSignUp, label: "SignUp "),
+                            const SizedBox(
+                              height: 40,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                text: "Already have an account ?",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: '  Log in',
+                                    style: const TextStyle(
+                                      color: Pallete.blueColor,
+                                      fontSize: 16,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Navigator.push(
+                                          context,
+                                          LoginView.route(),
+                                        );
+                                      },
+                                  ),
+                                ],
                               ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Navigator.push(
-                                    context,
-                                    LoginView.route(),
-                                  );
-                                },
                             ),
                           ],
                         ),
@@ -113,10 +122,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                   ),
                 ),
               ],
-            ),
-          ),
-        ],
-      )),
+            )),
     );
   }
 }

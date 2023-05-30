@@ -3,13 +3,18 @@ import '../../../theme/theme.dart';
 
 class AuthField extends StatelessWidget {
   const AuthField(
-      {super.key, required this.controller, required this.hintText});
+      {super.key,
+      required this.controller,
+      required this.hintText,
+      this.obscureText = false});
   final TextEditingController controller;
   final hintText;
+  final obscureText;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: obscureText,
       controller: controller,
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(

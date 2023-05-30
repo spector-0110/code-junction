@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/constants.dart';
 
+
+// client is important because its necessary for making api calls to appwrite
 final appwriteClientProvider = Provider(
   (ref) {
     Client client = Client();
