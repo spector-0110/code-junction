@@ -33,7 +33,7 @@ class AuthApi implements IAuthApi {
   @override
   Future<model.User?> currentUserSession() async {
     try {
-      return _account.get();
+      return await _account.get();
     } on AppwriteException {
       return null;
     } catch (e) {

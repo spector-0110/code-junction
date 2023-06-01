@@ -1,18 +1,21 @@
-import 'dart:convert';
+import 'package:flutter/material.dart';
 
+@immutable
 class UserModel {
   final String email;
   final String name;
   final String bio;
   final String id;
   final String profilePic;
-  UserModel({
+  const UserModel({
     required this.email,
     required this.name,
     required this.bio,
     required this.id,
     required this.profilePic,
   });
+
+  // copywith function is needed because all fields are final
 
   UserModel copyWith({
     String? email,
@@ -32,13 +35,12 @@ class UserModel {
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
-  
+
     result.addAll({'email': email});
     result.addAll({'name': name});
     result.addAll({'bio': bio});
-    result.addAll({'id': id});
     result.addAll({'profilePic': profilePic});
-  
+
     return result;
   }
 
@@ -47,14 +49,10 @@ class UserModel {
       email: map['email'] ?? '',
       name: map['name'] ?? '',
       bio: map['bio'] ?? '',
-      id: map['id'] ?? '',
+      id: map['\$id'] ?? '',
       profilePic: map['profilePic'] ?? '',
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -64,21 +62,21 @@ class UserModel {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is UserModel &&
-      other.email == email &&
-      other.name == name &&
-      other.bio == bio &&
-      other.id == id &&
-      other.profilePic == profilePic;
+        other.email == email &&
+        other.name == name &&
+        other.bio == bio &&
+        other.id == id &&
+        other.profilePic == profilePic;
   }
 
   @override
   int get hashCode {
     return email.hashCode ^
-      name.hashCode ^
-      bio.hashCode ^
-      id.hashCode ^
-      profilePic.hashCode;
+        name.hashCode ^
+        bio.hashCode ^
+        id.hashCode ^
+        profilePic.hashCode;
   }
 }

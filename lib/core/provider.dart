@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/constants.dart';
 
-
 // client is important because its necessary for making api calls to appwrite
 final appwriteClientProvider = Provider(
   (ref) {
@@ -19,5 +18,12 @@ final appWriteAccountProvider = Provider(
   (ref) {
     final client = ref.watch(appwriteClientProvider);
     return Account(client);
+  },
+);
+
+final dataBaseProvider = Provider(
+  (ref) {
+    final client = ref.watch(appwriteClientProvider);
+    return Databases(client);
   },
 );

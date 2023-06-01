@@ -8,3 +8,7 @@ void snackBar(String content, BuildContext context) {
     ),
   );
 }
+
+String userNameFromEmail(String email) {
+  return email.split('@')[0];
+}
