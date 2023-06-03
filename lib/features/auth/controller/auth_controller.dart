@@ -49,7 +49,7 @@ class AuthController extends StateNotifier<bool> {
             email: email,
             name: userNameFromEmail(email),
             bio: '',
-            id: '',
+            id: r.$id,
             profilePic: '');
         final res2 = await _userApi.saveUserData(userModel);
         res2.fold(

@@ -33,93 +33,97 @@ class _LoginViewState extends ConsumerState<LoginView> {
     final isLoding = ref.watch(authControllerProvider);
     return Scaffold(
       appBar: appbar,
-      body: isLoding ? const Loader():SafeArea(
-          child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: const AssetImage(AssestConstants.appBgWhite),
-                  colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.2), BlendMode.dstATop)),
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              gradient: RadialGradient(colors: [
-                Pallete.greyColor.withOpacity(0.2),
-                Pallete.blueColor.withOpacity(.04)
-              ], focalRadius: 2),
-            ),
-          ),
-          SingleChildScrollView(
-            child: Column(
+      body: isLoding
+          ? const Loader()
+          : SafeArea(
+              child: Stack(
               children: [
-                const SizedBox(
-                  height: 70,
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        alignment: Alignment.topCenter,
+                        image: const AssetImage(AssestConstants.appBgWhite),
+                        colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.2), BlendMode.dstATop)),
+                  ),
                 ),
-                const Icon(
-                  Icons.lock,
-                  size: 150,
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Pallete.backgroundColor.withOpacity(.14),
+                        Pallete.blueColor.withOpacity(.07),
+                        Pallete.backgroundColor.withOpacity(.25)
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
-                Form(
-                  child: Column(
-                    children: [
-                      AuthField(
-                          controller: _userNameController,
-                          hintText: "Email / User Name"),
-                      const SizedBox(
-                        height: 23,
-                      ),
-                      AuthField(
-                          obscureText: true,
-                          controller: _passwordController,
-                          hintText: "password"),
-                      const SizedBox(
-                        height: 70,
-                      ),
-                      RoundedSmallButton(
-                          onTap: onLogin,
-                          label: "Log In ",
-                          backgroundColor: Pallete.whiteColor),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          text: "Create new account ?",
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: '  Sign Up',
-                              style: const TextStyle(
-                                color: Pallete.blueColor,
-                                fontSize: 16,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Navigator.push(
-                                    context,
-                                    SignUpView.route(),
-                                  );
-                                },
-                            ),
-                          ],
+                Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 150,
                         ),
-                      ),
-                    ],
+                        Form(
+                          child: Column(
+                            children: [
+                              AuthField(
+                                  controller: _userNameController,
+                                  hintText: "Email / User Name"),
+                              const SizedBox(
+                                height: 23,
+                              ),
+                              AuthField(
+                                  obscureText: true,
+                                  controller: _passwordController,
+                                  hintText: "password"),
+                              const SizedBox(
+                                height: 70,
+                              ),
+                              RoundedSmallButton(
+                                  onTap: onLogin,
+                                  label: "Log In ",
+                                  backgroundColor: Pallete.whiteColor),
+                              const SizedBox(
+                                height: 40,
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  text: "Create new account ?",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: '  Sign Up',
+                                      style: const TextStyle(
+                                        color: Pallete.blueColor,
+                                        fontSize: 16,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Navigator.pop(context);
+                                          Navigator.push(
+                                            context,
+                                            SignUpView.route(),
+                                          );
+                                        },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
-            ),
-          ),
-        ],
-      )),
+            )),
     );
   }
 }
