@@ -28,7 +28,7 @@ class _MyDrawerState extends ConsumerState<MyDrawer> {
         child: const SafeArea(
           child: Column(
             children: [
-              InfoCard(username: 'Vatsa'),
+              InfoCard(username: ''),
             ],
           ),
         ),

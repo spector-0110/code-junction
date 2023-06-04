@@ -1,4 +1,5 @@
 import 'package:app_w/apis/user_api.dart';
+import 'package:app_w/core/core.dart';
 import 'package:app_w/features/auth/screens/loginView.dart';
 import 'package:app_w/features/home/screens/home_view.dart';
 import 'package:app_w/models/user_model.dart';
@@ -32,7 +33,7 @@ class AuthController extends StateNotifier<bool> {
         _userApi = userApi,
         super(false);
 
-  Future<model.User?> currentUser() => _authApi.currentUserSession();
+  FutureEither<model.User?> currentUser() => _authApi.currentUserSession();
 
   void signUp({
     required String email,

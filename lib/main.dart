@@ -21,7 +21,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       home: ref.watch(currentUserProvider).when(
             data: (user) {
-              // ignore: unnecessary_null_comparison
+              //  ignore: unnecessary_null_comparison
               if (user != null) {
                 return const HomeScreen();
               }

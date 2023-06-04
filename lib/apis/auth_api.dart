@@ -22,7 +22,7 @@ abstract class IAuthApi {
     required String email,
     required String password,
   });
-  Future<model.User?> currentUserSession();
+  FutureEither<model.User?> currentUserSession();
 }
 
 class AuthApi implements IAuthApi {
@@ -31,13 +31,18 @@ class AuthApi implements IAuthApi {
   AuthApi({required Account account}) : _account = account;
 
   @override
-  Future<model.User?> currentUserSession() async {
+  FutureEither<model.User?> currentUserSession() async {
     try {
-      return await _account.get();
-    } on AppwriteException {
-      return null;
-    } catch (e) {
-      return null;
+      final result = await _account.get();
+      return right(result);
+    }  on AppwriteException catch (e, stackTrace) {
+      return left(
+        Failure(e.message ?? 'Exception', stackTrace),
+      );
+    } catch (e, stackTrace) {
+      return left(
+        Failure(e.toString(), stackTrace),
+      );
     }
   }
 
